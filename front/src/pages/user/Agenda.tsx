@@ -48,7 +48,7 @@ export const Agenda = () => {
       {error && <div>{error}</div>}
       <div className="relative">
         {meeting && (
-          <div className="mt-8 grid grid-cols-1 gap-4 text-black md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-4 text-black md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             {meeting.map((data, index) => (
               <div key={index} className="size-96">
                 <div className="relative h-3/4 overflow-hidden">
