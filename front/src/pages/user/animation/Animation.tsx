@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./animation.css";
 import objection from "../animation/anime_img/objection.png";
-import no_objection from "../animation/anime_img/no_objection.png";
+import no_objection from "../animation/anime_img/no_objection.gif";
 import standup from "../animation/anime_img/standup.png";
-import clap from "../animation/anime_img/clap.png";
-import hand_up from "../animation/anime_img/hand_up.png";
+import clap from "../animation/anime_img/clap.gif";
+import hand_up from "../animation/anime_img/hand_up.gif";
 
-export const Animation = ({ arg }: { arg: number}) => {
+export const Animation = ({ arg }: { arg: number }) => {
   const [isVisible, setIsVisible] = useState(true);
 
-  const img = ["",no_objection, objection, standup, clap, hand_up];
+  const img = ["", no_objection, objection, standup, clap, hand_up];
 
   useEffect(() => {
     setIsVisible(true); // コンポーネントが更新されたときにアニメーションを表示状態にリセット
