@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import curtain from "./curtain.png";
 import { useNavigate } from "react-router-dom";
 import joinCard from "./join-button.svg";
@@ -16,7 +16,7 @@ export const Agenda = () => {
   const [isOpenArray, setIsOpenArray] = useState(
     Array(meeting?.length).fill(false),
   );
-
+  const [use, setUse] = useState<string[]>([]);
   interface Entity {
     IssueId: string;
   }
@@ -32,6 +32,16 @@ export const Agenda = () => {
       return newOpenArray;
     });
     const timer = setTimeout(() => {
+      // 現在のuse配列を取得
+      const currentUse = JSON.parse(sessionStorage.getItem("use") || "[]");
+
+      // 新しい値を追加
+      const updatedUse = [...currentUse, entity.IssueId];
+
+      // セッションストレージに保存
+      sessionStorage.setItem("use", JSON.stringify(updatedUse));
+      setUse(updatedUse); // useの状態を更新
+
       navigate("/theater", { state: entity });
       setIsOpenArray((prev) => {
         const newOpenArray = [...prev];
@@ -41,6 +51,10 @@ export const Agenda = () => {
       clearTimeout(timer);
     }, 1000);
   };
+
+  useEffect(() => {
+    setUse(JSON.parse(sessionStorage.getItem("use") || "[]"));
+  }, []);
 
   return (
     <Layout>
