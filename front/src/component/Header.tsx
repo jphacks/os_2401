@@ -104,9 +104,12 @@ export default function App() {
           />
         </button>
       )}
-      <h1 className="z-50 ml-4 flex items-center text-xl font-bold text-black">
+      <h1 className="z-50 ml-4 flex flex-grow items-center text-xl font-bold text-black">
         国会劇場
       </h1>
+      <div className="">
+        <img src="./ai.png" alt="" className="size-16" />
+      </div>
       <div className="absolute right-2 flex h-full items-center">
         {/* TODO: icon */}
         {profile.length > 0 && (
