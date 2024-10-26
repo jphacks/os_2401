@@ -7,10 +7,10 @@ import Footer from "./component/Footer";
 import Header from "./component/Header";
 import Login from "./pages/Login";
 import { Terms } from "./pages/Terms";
-import { Agenda } from "./pages/user/Agenda";
+// import { Agenda } from "./pages/user/Agenda";
 import { TheaterCreateTable } from "./pages/admin/TheaterCreateTable";
 import TheaterCreate from "./pages/admin/TheaterCreate";
-import { Theater } from "./pages/user/Theater";
+import { MainTheater } from "./pages/user/theater/MainTheater";
 
 import NotFound from "./component/notFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -52,11 +52,11 @@ const Routers = () => {
   const routesWithoutHeaderAndFooter = [
     { path: "/", element: <Terms /> },
     { path: "/login", element: <Login /> },
-    { path: "/theater", element: <Theater /> },
+    { path: "/theater", element: <MainTheater /> },
   ];
 
   const routesWithHeaderAndFooter = [
-    { path: "/agenda", element: <Agenda /> },
+    // { path: "/agenda", element: <Agenda /> },
     { path: `/${import.meta.env.VITE_APP_ADMIN}`, element: <AdminLogin /> },
     { path: `/secret/theater-create-table`, element: <TheaterCreateTable /> },
     { path: `/secret/theater-create/:issueID`, element: <TheaterCreate /> },
