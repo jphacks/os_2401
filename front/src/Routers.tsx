@@ -5,10 +5,11 @@ import { ContextWrapper } from "./context/ContextWrapper";
 // components
 import Footer from "./component/Footer";
 import Header from "./component/Header";
-import Login from "./pages/Login";
 import { Terms } from "./pages/Terms";
 import { Agenda } from "./pages/user/Agenda";
+import { History } from "./pages/user/History";
 import { TheaterCreateTable } from "./pages/admin/TheaterCreateTable";
+import Login from "./pages/Login";
 import TheaterCreate from "./pages/admin/TheaterCreate";
 import { Theater } from "./pages/user/Theater";
 
@@ -57,6 +58,7 @@ const Routers = () => {
 
   const routesWithHeaderAndFooter = [
     { path: "/agenda", element: <Agenda /> },
+    { path: "/history", element: <History /> },
     { path: `/${import.meta.env.VITE_APP_ADMIN}`, element: <AdminLogin /> },
     { path: `/secret/theater-create-table`, element: <TheaterCreateTable /> },
     { path: `/secret/theater-create/:issueID`, element: <TheaterCreate /> },
