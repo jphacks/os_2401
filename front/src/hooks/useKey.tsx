@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Speech } from "../types/speech";
-import { VoiceVoice } from "../pages/user/VoiceVoice";
+import { VoiceVoice } from "../pages/user/AudioPlayer";
 
 export const useKey = (
   speech: Speech[] | null | undefined,
