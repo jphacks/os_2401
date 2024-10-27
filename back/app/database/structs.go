@@ -32,3 +32,21 @@ type SpeechRecord struct {
 	SpeechSummary   string `gorm:"type:text;not null"`                   // 要約
 	AnimationPoint  string `gorm:"type:varchar(5)"`                      // アニメーションポイント
 }
+
+type History struct {
+	ID      uint   `gorm:"primaryKey"` // 複合主キーの一部としてIDを定義
+	IssueID string `gorm:"type:char(21);not null"`
+	UserID  string `gorm:"type:char(21);not null"`
+}
+
+type Quiz struct {
+	ID       uint   `gorm:"primaryKey;autoIncrement"`
+	IssueID  string `gorm:"type:char(21);not null;index:idx_issue_quiz,unique"`
+	QuizID   string `gorm:"type:char(21);not null;index:idx_issue_quiz,unique"`
+	Question string `gorm:"type:varchar(255);not null"`
+	Answer   string `gorm:"type:varchar(255);not null"`
+	Choice1  string `gorm:"type:varchar(100);not null"`
+	Choice2  string `gorm:"type:varchar(100);not null"`
+	Choice3  string `gorm:"type:varchar(100);not null"`
+	Choice4  string `gorm:"type:varchar(100);not null"`
+}
