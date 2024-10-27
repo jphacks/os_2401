@@ -108,10 +108,13 @@ export const MainTheater = () => {
 
       bgmInstance = new Audio(bgm);
 
+      bgmInstance.volume = 0.2;
+
       bgmInstance.addEventListener("ended", () => {
         bgmInstance = null;
         // サイド再生する
         bgmInstance = new Audio(bgm);
+        bgmInstance.volume = 0.2;
       });
 
       await bgmInstance.play();

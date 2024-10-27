@@ -25,10 +25,13 @@ export const Animation = ({ arg }: { arg: number }) => {
 
       catIn = new Audio(cat);
 
+      catIn.volume = 1;
+
       catIn.addEventListener("ended", () => {
         catIn = null;
         // サイド再生する
         catIn = new Audio(cat);
+        catIn.volume = 1;
       });
 
       await catIn.play();
