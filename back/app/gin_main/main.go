@@ -297,7 +297,7 @@ func main() {
 	// 履歴を取得
 	server.GET("/history/select/all", func(c *gin.Context) {
 		var histories []database.History
-		
+
 		dbConn, err := database.GetDB()
 		if err != nil {
 			// データベース接続の取得に失敗した場合のエラーハンドリング
@@ -318,6 +318,60 @@ func main() {
 		c.JSON(http.StatusOK, histories)
 	})
 
+	// クイズの問題を登録
+	server.POST("/quiz/insert", func(c *gin.Context) {
+		var quiz database.Quiz
+		if err := c.ShouldBindJSON(&quiz); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		dbConn, err := database.GetDB()
+		if err != nil {
+			// データベース接続の取得に失敗した場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database."})
+			return
+		}
+		if dbConn == nil {
+			// dbConnがnilの場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection is nil."})
+			return
+		}
+
+		tx := dbConn.Begin()
+		if err := tx.Create(&quiz).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		tx.Commit()
+		c.JSON(http.StatusCreated, quiz)
+	})
+
+	// クイズの問題issueIDを元にを取得
+	server.GET("/quiz/select/all", func(c *gin.Context) {
+		IssueID := c.Param("issueID")
+		var quiz []database.Quiz
+
+		dbConn, err := database.GetDB()
+		if err != nil {
+			// データベース接続の取得に失敗した場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database."})
+			return
+		}
+		if dbConn == nil {
+			// dbConnがnilの場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection is nil."})
+			return
+		}
+
+		if err := dbConn.Where("issue_id = ?", IssueID).Find(&quiz).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, quiz)
+	})
 	/**
 	 * 以下はテスト用のエンドポイント
 	 */
