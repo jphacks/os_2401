@@ -81,7 +81,6 @@ func main() {
 
 	// 会議レコードの登録
 	server.POST("/meeting_record/insert", func(c *gin.Context) {
-		fmt.Println("meeting_record insert")
 		meetingRecord := new(database.MeetingRecord)
 		if err := c.ShouldBindJSON(meetingRecord); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -156,7 +155,6 @@ func main() {
 	})
 	//	発言レコードの登録
 	server.POST("/speech_record/insert", func(c *gin.Context) {
-		fmt.Println("speech_record insert")
 		// リクエストボディを読み取る
 		bodyBytes, err := io.ReadAll(c.Request.Body)
 		if err != nil {
@@ -167,8 +165,6 @@ func main() {
 		// 読み取った内容を再度c.Request.Bodyに設定する
 		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
-		// リクエストボディの内容をログに出力
-		fmt.Println(string(bodyBytes))
 		var speechRecords []*database.SpeechRecord
 		if err := c.ShouldBindJSON(&speechRecords); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -268,6 +264,60 @@ func main() {
 		}
 		c.JSON(http.StatusOK, speechRecord)
 	})
+
+	// 会議を履歴に保存
+	server.POST("/history/insert", func(c *gin.Context) {
+		issueID := c.Param("issueID")
+		var history database.History
+
+		history.IssueID = issueID
+
+		dbConn, err := database.GetDB()
+		if err != nil {
+			// データベース接続の取得に失敗した場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database."})
+			return
+		}
+		if dbConn == nil {
+			// dbConnがnilの場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection is nil."})
+			return
+		}
+
+		tx := dbConn.Begin()
+		if err := tx.Create(&history).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		tx.Commit()
+		c.JSON(http.StatusCreated, history)
+	})
+
+	// 履歴を取得
+	server.GET("/history/select/all", func(c *gin.Context) {
+		var histories []database.History
+		
+		dbConn, err := database.GetDB()
+		if err != nil {
+			// データベース接続の取得に失敗した場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to the database."})
+			return
+		}
+		if dbConn == nil {
+			// dbConnがnilの場合のエラーハンドリング
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection is nil."})
+			return
+		}
+
+		if err := dbConn.Find(&histories).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, histories)
+	})
+
 	/**
 	 * 以下はテスト用のエンドポイント
 	 */
