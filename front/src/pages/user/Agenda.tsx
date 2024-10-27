@@ -19,11 +19,13 @@ export const Agenda = () => {
   const [use, setUse] = useState<string[]>([]);
   interface Entity {
     IssueId: string;
+    NameOfMeeting: string;
   }
 
-  const toggleCurtain = (index: number, IssueId: string) => {
+  const toggleCurtain = (index: number, IssueId: string, nameOfMeeting: string) => {
     const entity: Entity = {
       IssueId: IssueId,
+      NameOfMeeting: nameOfMeeting,
     };
 
     setIsOpenArray((prev) => {
@@ -95,7 +97,9 @@ export const Agenda = () => {
                   </div>
                   <button
                     type="button"
-                    onClick={() => toggleCurtain(index, data.IssueID)}
+                    onClick={() =>
+                      toggleCurtain(index, data.IssueID, data.NameOfMeeting)
+                    }
                     className="mr-4"
                     disabled={isOpenArray[index]}
                   >

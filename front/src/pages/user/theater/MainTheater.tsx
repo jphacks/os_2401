@@ -31,6 +31,8 @@ export const MainTheater = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const { speech, error, isLoading } = useFetchSpeech(url);
 
+  const nameOfMeeting = location.state.NameOfMeeting;
+
   let newSpeechData;
 
   if (!speech === null) {
@@ -144,7 +146,7 @@ export const MainTheater = () => {
                     },
                   }}
                 >
-                  タイトル文章
+                  {nameOfMeeting}
                 </Typography>
               </Box>
             </Grid>
