@@ -12,7 +12,7 @@ import { useFetchSpeech } from "../../../hooks/useFetchSpeech";
 import { useKey } from "../../../hooks/useKey";
 import { Opening } from "../animation/opening/Opening";
 
-import gif from "../animation/anime_img/dareda.gif";
+import gif from "../animation/anime_img/amariwakamowo.gif";
 import { AutoVoiceComponent } from "../AudioPlayer";
 import { Animation } from "../animation/Animation";
 
@@ -30,6 +30,8 @@ export const MainTheater = () => {
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(false); //  初回ロード
   const [showAnimation, setShowAnimation] = useState(false);
   const { speech, error, isLoading } = useFetchSpeech(url);
+
+  const nameOfMeeting = location.state.NameOfMeeting;
 
   let newSpeechData;
 
@@ -81,7 +83,7 @@ export const MainTheater = () => {
         <div id="wrap"></div>;
         // アニメーションが終了したらagenda画面に遷移する
         navigate("/agenda");
-      }, 1000); // 3000ミリ秒後に実行
+      }, 1000);
 
       return () => clearTimeout(timer); // コンポーネントのクリーンアップ時にタイマーをクリア
     }
@@ -99,7 +101,7 @@ export const MainTheater = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpening(true);
-    }, 5500);
+    }, 2300);
     return () => clearTimeout(timer); // クリーンアップタイマー
   }, [isEndOpening]);
 
@@ -144,7 +146,7 @@ export const MainTheater = () => {
                     },
                   }}
                 >
-                  タイトル文章
+                  {nameOfMeeting}
                 </Typography>
               </Box>
             </Grid>
