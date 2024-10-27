@@ -84,6 +84,13 @@ export const MainTheater = () => {
       const timer = setTimeout(() => {
         <div id="wrap"></div>;
         // アニメーションが終了したらagenda画面に遷移する
+        // bgmと止めてインスタンスを破棄する
+        if (bgmInstance) {
+          console.log("bgmInstance.pause()");
+          bgmInstance.pause();
+          bgmInstance = null;
+        }
+        console.log("not bgm");
         navigate("/agenda");
       }, 1000);
 
