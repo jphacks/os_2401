@@ -13,9 +13,11 @@ import { useKey } from "../../../hooks/useKey";
 import { Opening } from "../animation/opening/Opening";
 
 import gif from "../animation/anime_img/amariwakamowo.gif";
+import bgm from "../animation/anime_img/BGM.mp3";
 import { AutoVoiceComponent } from "../AudioPlayer";
 import { Animation } from "../animation/Animation";
 
+let bgmInstance: HTMLAudioElement | null = null;
 var path = import.meta.env.VITE_APP_SPEECH_PATH;
 
 export const MainTheater = () => {
@@ -82,12 +84,41 @@ export const MainTheater = () => {
       const timer = setTimeout(() => {
         <div id="wrap"></div>;
         // アニメーションが終了したらagenda画面に遷移する
+        // bgmと止めてインスタンスを破棄する
+        if (bgmInstance) {
+          console.log("bgmInstance.pause()");
+          bgmInstance.pause();
+          bgmInstance = null;
+        }
+        console.log("not bgm");
         navigate("/agenda");
       }, 1000);
 
       return () => clearTimeout(timer); // コンポーネントのクリーンアップ時にタイマーをクリア
     }
   }, [isFinish, navigate]);
+
+  const bgmPlayer = async () => {
+    try {
+      if (bgmInstance) {
+        // 既存の音声が再生中であれば一度停止
+        bgmInstance.pause();
+        bgmInstance = null;
+      }
+
+      bgmInstance = new Audio(bgm);
+
+      bgmInstance.addEventListener("ended", () => {
+        bgmInstance = null;
+        // サイド再生する
+        bgmInstance = new Audio(bgm);
+      });
+
+      await bgmInstance.play();
+    } catch (error) {
+      console.error("Failed to fetch or play audio:", error);
+    }
+  };
 
   const [isEndOpening, setIsEndOpening] = useState<boolean>(false);
   // オープニングアニメーションの終了を監視
@@ -99,8 +130,9 @@ export const MainTheater = () => {
   }, []);
   // オープニングアニメーションの終了後にセリフ表示
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       setIsOpening(true);
+      await bgmPlayer();
     }, 2300);
     return () => clearTimeout(timer); // クリーンアップタイマー
   }, [isEndOpening]);
