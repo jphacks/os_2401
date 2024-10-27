@@ -1,5 +1,6 @@
 # 国会劇場
 
+![diet-main](https://github.com/user-attachments/assets/020c55ca-4fab-462c-acb2-6097a91e7056)
 ![diet-image](https://github.com/user-attachments/assets/a18de557-85f2-4c95-bfb9-945a00e6796c)
 
 ## 製品概要
